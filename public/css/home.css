@@ -1,4 +1,5 @@
 .banner {
+    font-size: 48px;
     justify-content: space-evenly;
     align-items: center;
     display: flex;
@@ -7,7 +8,7 @@
     margin-left: -10px;
     width: 100%;
     background-color: #FFBC5E;
-    height: 40vh;
+    height: 300px;
 }
 
 .banner-text {
@@ -20,4 +21,33 @@
 .banner-image {
     width: 250px;
     height: auto;
+}
+
+@media (max-width: 1220px) {
+    .banner-text {
+        font-size: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .banner {
+        margin-top: 193px;
+    }
+}
+
+@media (max-width: 570px) {
+    .banner-text {
+        font-size: 32px;
+    }
+}
+
+@media (max-width: 480px) {
+    .banner-image {
+        width: 30%;
+        height: auto;
+    }
+
+    .banner-text {
+        font-size: 5vw;
+    }
 }
