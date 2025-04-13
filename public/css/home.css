@@ -1,0 +1,23 @@
+.banner {
+    justify-content: space-evenly;
+    align-items: center;
+    display: flex;
+    margin-top: 64px;
+    padding-right: 20px;
+    margin-left: -10px;
+    width: 100%;
+    background-color: #FFBC5E;
+    height: 40vh;
+}
+
+.banner-text {
+    font-weight: 700;
+    width: 40vw;
+    display: block;
+    font-size: 48px;
+}
+
+.banner-image {
+    width: 250px;
+    height: auto;
+}
