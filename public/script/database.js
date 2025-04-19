@@ -131,6 +131,46 @@ function getUserEmailAndPassword(callback) {
     })
 }
 
+function getUserData(callback) {
+    const query = `SELECT * FROM Customer`;
+    client.query(query, (err, res) => {
+        if (err) {
+            callback(err, null);
+        } else {
+            callback(null, res.rows);
+        }
+    })
+}
+
+function getUserCount(callback) {
+    const query = `SELECT count(*) AS total_users FROM Customer`;
+    client.query(query, (err, res) => {
+        if (err) {
+            callback(err, null);
+        } else {
+            const count = res.rows[0].total_users;
+            callback(null, count);
+        }
+    })
+}
+
+async function insertUser(values) {
+    const query = `INSERT INTO Customer (ID, username, fname, lname, 
+        date_of_birth, email, pass) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7);`;
+    const valuesArray = [
+        values.id,
+        values.username,
+        values.fname,
+        values.lname,
+        values.date_of_birth,
+        values.email,
+        values.password
+    ];
+    const result = await client.query(query, valuesArray);
+    return result;
+}
+
 process.on('SIGINT', async () => {
     console.log("shutting down...");
     await client.end();
@@ -147,5 +187,8 @@ module.exports = {
     getDrinksByRestaurantID,
     searchRestaurantFoodByName,
     getAdminEmailAndPassword,
-    getUserEmailAndPassword
+    getUserEmailAndPassword,
+    getUserData,
+    getUserCount,
+    insertUser
 };

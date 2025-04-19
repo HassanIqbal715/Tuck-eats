@@ -81,3 +81,27 @@ export async function fetchUserEmailsAndPasswords() {
         return null;
     }
 }
+
+export async function fetchUser() {
+    try {
+        const response = await fetch('/api/user/data');
+        const data = await response.json();
+        return data.data;
+    }
+    catch (error) {
+        console.error('Error fetching user data:', error);
+        return null;
+    }
+}
+
+export async function fetchUserCount() {
+    try {
+        const response = await fetch('/api/user/count');
+        const data = await response.json();
+        return data.count;
+    }
+    catch (error) {
+        console.error('Error fetching user count:', error);
+        return null;
+    }    
+}
