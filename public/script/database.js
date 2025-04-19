@@ -14,6 +14,7 @@ function connectClient() {
     client.connect();
 }
 
+// Restaurant functions
 function getRestaurantByID(id, callback) {
     const query = `SELECT * FROM Restaurant WHERE ID = $1`;
     client.query(query, [id], (err, res) => {
@@ -107,6 +108,29 @@ function searchRestaurantFoodByName(id, name, callback) {
     });    
 }
 
+// Login functions
+function getAdminEmailAndPassword(callback) {
+    const query = `SELECT pass, email FROM Administrator`;
+    client.query(query, (err, res) => {
+        if (err) {
+            callback(err, null);
+        } else {
+            callback(null, res.rows);
+        }
+    })
+}
+
+function getUserEmailAndPassword(callback) {
+    const query = `SELECT pass, email FROM Customer`;
+    client.query(query, (err, res) => {
+        if (err) {
+            callback(err, null);
+        } else {
+            callback(null, res.rows);
+        }
+    })
+}
+
 process.on('SIGINT', async () => {
     console.log("shutting down...");
     await client.end();
@@ -121,5 +145,7 @@ module.exports = {
     getRestaurant,
     getFoodByRestaurantID,
     getDrinksByRestaurantID,
-    searchRestaurantFoodByName
+    searchRestaurantFoodByName,
+    getAdminEmailAndPassword,
+    getUserEmailAndPassword
 };

@@ -6,7 +6,9 @@ const { connectClient,
     getFoodByRestaurantID,
     getDrinksByRestaurantID,
     getRestaurantContactsByID,
-    searchRestaurantFoodByName
+    searchRestaurantFoodByName,
+    getAdminEmailAndPassword,
+    getUserEmailAndPassword
 } = require('./public/script/database.js');
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -64,8 +66,30 @@ app.get('/api/items/drinks/:id', (req, res) =>{
     })
 });
 
+app.get('/api/user/email-and-password', (req, res) => {
+    getUserEmailAndPassword((err, data) => {
+        if (err) {
+            return res.status(500).json({ message: 'Failed to get user data' });
+        }
+        res.json({ data });
+    })
+});
+
+app.get('/api/admin/email-and-password', (req, res) => {
+    getAdminEmailAndPassword((err, data) => {
+        if (err) {
+            return res.status(500).json({ message: 'Failed to get admin data' });
+        }
+        res.json({ data });
+    })
+});
+
 app.get('/', (req, res) =>{
     res.sendFile(path.join(__dirname, 'views', 'index.html'));
+});
+
+app.get('/login/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'login.html'));
 });
 
 app.get('/restaurant/:id', (req, res) => {

@@ -57,3 +57,27 @@ export async function fetchSearchRestaurantFoodByName(id, name) {
         return null;
     }    
 }
+
+export async function fetchAdminEmailsAndPasswords() {
+    try {
+        const response = await fetch('/api/admin/email-and-password');
+        const data = await response.json();
+        return data.data;
+    }
+    catch (error) {
+        console.error('Error fetching admin email and password:', error);
+        return null;
+    }
+}
+
+export async function fetchUserEmailsAndPasswords() {
+    try {
+        const response = await fetch('/api/user/email-and-password');
+        const data = await response.json();
+        return data.data;
+    }
+    catch (error) {
+        console.error('Error fetching user email and password:', error);
+        return null;
+    }
+}
