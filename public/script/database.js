@@ -25,6 +25,17 @@ function getRestaurantByID(id, callback) {
     })
 }
 
+function getRestaurantContactsByID(id, callback) {
+    const query = `SELECT phonenumber FROM Restaurant_phonenumber WHERE ID = $1`;
+    client.query(query, [id], (err, res) => {
+        if (err) {
+            callback(err, null);
+        } else {
+            callback(null, res.rows);
+        }
+    })
+}
+
 function getRestaurant(callback) {
     client.query('SELECT * FROM Restaurant', (err, res) => {
         if (err) {
@@ -45,6 +56,57 @@ function getItems(callback) {
     })    
 }
 
+function getFoodByRestaurantID(id, callback) {
+    const query = `SELECT Item.ID, name, cuisine_type, item_type, size_type, 
+                    price, restaurant_ID, image_link
+                FROM Food INNER JOIN Item 
+                ON Food.ID = Item.ID 
+                WHERE Restaurant_ID = $1;
+`
+    client.query(query, [id], (err, res) => {
+        if (err) {
+            callback(err, null);
+        } else {
+            callback(null, res.rows);
+        }
+    })    
+}
+
+function getDrinksByRestaurantID(id, callback) {
+    const query = `SELECT Item.ID, name, item_type, size, price, restaurant_id, 
+                    image_link 
+                FROM Drink INNER JOIN Item 
+                ON Drink.ID = Item.ID 
+                WHERE Restaurant_ID = $1;`
+    client.query(query, [id], (err, res) => {
+        if (err) {
+            callback(err, null);
+        } else {
+            callback(null, res.rows);
+        }
+    })    
+}
+
+function searchRestaurantFoodByName(id, name, callback) {
+    const query = `
+        SELECT Item.ID, name, cuisine_type, item_type, size_type, 
+        price, restaurant_ID, image_link
+        FROM Food INNER JOIN Item 
+        ON Food.ID = Item.ID 
+        WHERE Restaurant_ID = $1 AND name ILIKE $2;
+    `;
+
+    const params = [id, `%${name}%`];
+
+    client.query(query, params, (err, res) => {
+        if (err) {
+            callback(err, null);
+        } else {
+            callback(null, res.rows);
+        }
+    });    
+}
+
 process.on('SIGINT', async () => {
     console.log("shutting down...");
     await client.end();
@@ -55,6 +117,9 @@ process.on('SIGINT', async () => {
 module.exports = { 
     connectClient, 
     getRestaurantByID,
+    getRestaurantContactsByID,
     getRestaurant,
-    getItems
+    getFoodByRestaurantID,
+    getDrinksByRestaurantID,
+    searchRestaurantFoodByName
 };
